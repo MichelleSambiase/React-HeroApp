@@ -14,28 +14,32 @@ const Home = () => {
   const useStyles = makeStyles({
     styleContainerHeroe: {
       padding: "20px 5px",
-    },
-    styleGridItemHeroe: {
       display: "flex",
       justifyContent: "center",
+    },
+    styleGridItemHeroe: {
       margin: "30px",
     },
   });
   const classes = useStyles();
   return (
-    <div>
-      <Grid container className={classes.styleContainerHeroe}>
-        {heroes.map((heroe, index) => (
-          <Grid key={index} item className={classes.styleGridItemHeroe}>
-            <CardHeroes
-              heroe={heroe}
-              deleteHero={handleDeleteHero}
-              propsBooleano={true}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    </div>
+    <Grid container className={classes.styleContainerHeroe}>
+      {heroes.map((heroe, index) => (
+        <Grid
+          item
+          lg={3}
+          key={index}
+          item
+          className={classes.styleGridItemHeroe}
+        >
+          <CardHeroes
+            heroe={heroe}
+            deleteHero={handleDeleteHero}
+            propsBooleano={true}
+          />
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 

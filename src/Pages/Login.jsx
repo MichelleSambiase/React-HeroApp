@@ -1,120 +1,149 @@
-import {
-  Container,
-  Grid,
-  TextField,
-  FormControl,
-  Input,
-  InputLabel,
-  IconButton,
-  Button,
-  InputAdornment,
-  Card,
-  CardContent,
-  Typography,
-  makeStyles,
-} from "@material-ui/core";
+import React from "react";
+import { Formik, useFormik } from "formik";
+
+import { makeStyles } from "@material-ui/core";
 
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
+import InputComponent from "../components/InputComponent";
+import ButtonComponent from "../components/ButtonComponent";
 
-import React from "react";
+const axios = require("axios");
 
 const Login = () => {
   const useStyles = makeStyles({
     root: {
-      justifyContent: "space-evenly",
-      display: "flex",
-      alignItems: "center",
-      flexDirection: "column",
-      height: "100%",
-    },
-    styleEmail: {
-      width: "250px",
-    },
-    fatherRoot: {
-      height: "100vh",
       width: "100%",
-    },
-    buttonLogIn: {
+      height: "600px",
       display: "flex",
       justifyContent: "center",
-      marginTop: "30px",
+      alignItems: "center",
     },
-    styleLogIn: {
+    loginForm: {
+      background: "#6e7c7c94",
+      height: "80%",
+      width: "20%",
+      borderRadius: "5px",
       display: "flex",
       flexDirection: "column",
+      justifyContent: "space-evenly",
+      alignItems: "center",
     },
-    styleCardInfo: {
-      boxShadow:
-        "20px 20px 1px 0px rgb(110 124 124), -20px -19px 7px 0px rgb(110 124 124), -1px -2px 19px 3px rgb(0 0 0 / 12%)",
+    loginError: {
+      color: "#973636",
+      width: "50%",
+    },
+    messageError: {
+      fontSize: "0.8rem",
     },
   });
-  const [values, setValues] = React.useState({
-    password: "",
-    showPassword: false,
-  });
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
+  const loginUser = async () => {
+    try {
+      const response = await axios({
+        method: "post",
+        url: "http://challenge-react.alkemy.org/",
+        data: JSON.stringify(response),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch {
+      console.error("entro en el error");
+    }
   };
   const classes = useStyles();
   return (
-    <div className={classes.fatherRoot}>
-      <Container className={classes.root}>
-        <div className={classes.cardMensajeLogin}>
-          <Card className={classes.styleCardInfo}>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                Por favor ingresa tu Email y contraseña:
-              </Typography>
-            </CardContent>
-          </Card>
-        </div>
-        <Grid className={classes.styleLogIn}>
-          <TextField
-            id="Email"
-            label="Email"
-            type="Email"
-            className={classes.styleEmail}
-          />
+    <>
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+        }}
+        validate={(valores) => {
+          let errores = {};
+          // Validacion Email
+          if (!valores.email) {
+            errores.email = "Por favor ingresa un Email valido";
+          } else if (
+            !/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(
+              valores.email
+            )
+          ) {
+            errores.email =
+              "El email solo puede contener letras, numeros, puntos, guiones y guion bajo.";
+          }
+          // Validacion Contraseña
+          /*     if (!valores.password) {
+            errores.password = "Por favor ingresa una contraseña valida.";
+          } else if (!/^[^\s]{4}$/.test(valores.password)) {
+            errores.password =
+              "La contraseña tiene que tener un minimo de 4 caracteres y un número.";
+          } */
+          return errores;
+        }}
+        onSubmit={(valores) => {}}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleSubmit,
+          handleChange,
+          handleBlur,
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <div className={classes.root}>
+              <div className={classes.loginForm}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-evenly",
+                    height: "50%",
+                    alignItems: "center",
+                  }}
+                >
+                  <InputComponent
+                    id="email"
+                    label="Email"
+                    type="email"
+                    name="email"
+                    value={values.email}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
 
-          <FormControl>
-            <InputLabel htmlFor="standard-adornment-password">
-              Password
-            </InputLabel>
-            <Input
-              id="standard-adornment-password"
-              type={values.showPassword ? "text" : "password"}
-              value={values.password}
-              onChange={handleChange("password")}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                  >
-                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-          <div className={classes.buttonLogIn}>
-            <Button variant="outlined" color="primary">
-              Iniciar Sesion
-            </Button>
-          </div>
-        </Grid>
-      </Container>
-    </div>
+                  {errors.email && touched.email && (
+                    <div className={classes.loginError}>
+                      <p className={classes.messageError}>{errors.email}</p>
+                    </div>
+                  )}
+                  <InputComponent
+                    id="password"
+                    label="Contraseña"
+                    type="password"
+                    name="password"
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.password && touched.password && (
+                    <div className={classes.loginError}>
+                      <p className={classes.messageError}>{errors.password}</p>
+                    </div>
+                  )}
+                </div>
+                <ButtonComponent
+                  label="Iniciar Sesion"
+                  type="submit"
+                  handleClick={loginUser}
+                />
+              </div>
+            </div>
+          </form>
+        )}
+      </Formik>
+    </>
   );
 };
 

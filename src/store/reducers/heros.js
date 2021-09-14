@@ -34,7 +34,9 @@ export default function heros(state = initialState, action) {
           searchHeroes: state.searchHeroes.filter(
             (hero) => hero.id !== action.payload.id
           ),
-          homeHeroes: state.homeHeroes.concat(action.payload),
+          homeHeroes: state.homeHeroes.concat(action.payload).sort((a, b) => {
+            return a.powerStatsTotal > b.powerStatsTotal ? -1 : 1;
+          }),
           badHeros: state.badHeros + 1,
         };
       }
