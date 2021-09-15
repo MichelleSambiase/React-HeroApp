@@ -1,10 +1,18 @@
-import { SET_HERO, ADD_HERO, DELETE_HERO } from "../actions/hero";
+import {
+  SET_HERO,
+  ADD_HERO,
+  DELETE_HERO,
+  LOGGED_IN,
+  SEARCH_HEROES,
+} from "../actions/hero";
 
 const initialState = {
   searchHeroes: [],
   homeHeroes: [],
   goodHeros: 0,
   badHeros: 0,
+  isLogged: false,
+  response: [],
 };
 
 export default function heros(state = initialState, action) {
@@ -65,6 +73,17 @@ export default function heros(state = initialState, action) {
         };
       }
       return returnResultState;
+
+    case LOGGED_IN:
+      return {
+        ...state,
+        isLogged: action.payload,
+      };
+    case SEARCH_HEROES:
+      return {
+        ...state,
+        searchHeroes: action.payload,
+      };
 
     default:
       return state;

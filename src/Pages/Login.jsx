@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, useFormik } from "formik";
 
 import { makeStyles } from "@material-ui/core";
@@ -7,10 +7,17 @@ import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputComponent from "../components/InputComponent";
 import ButtonComponent from "../components/ButtonComponent";
+import { Redirect, Route, useHistory } from "react-router";
+
+import Home from "../components/Home";
+import { useDispatch } from "react-redux";
+import { loggedIn } from "../store/actions/hero";
 
 const axios = require("axios");
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const useStyles = makeStyles({
     root: {
       width: "100%",
@@ -37,20 +44,23 @@ const Login = () => {
       fontSize: "0.8rem",
     },
   });
-  const loginUser = async () => {
-    try {
-      const response = await axios({
-        method: "post",
-        url: "http://challenge-react.alkemy.org/",
-        data: JSON.stringify(response),
-        headers: {
-          "Content-Type": "application/json",
-        },
+  const loginUser = async (values) => {
+    axios
+      .post("http://challenge-react.alkemy.org/", {
+        email: values.email,
+        password: values.password,
+      })
+      .then(function (response) {
+        console.log(response);
+        localStorage.setItem("token", response.data.token);
+        dispatch(loggedIn(true));
+        history.push("/Home");
+      })
+      .catch(function (error) {
+        alert("Ingrese un email y contraseña validos.");
       });
-    } catch {
-      console.error("entro en el error");
-    }
   };
+
   const classes = useStyles();
   return (
     <>
@@ -61,6 +71,7 @@ const Login = () => {
         }}
         validate={(valores) => {
           let errores = {};
+
           // Validacion Email
           if (!valores.email) {
             errores.email = "Por favor ingresa un Email valido";
@@ -81,7 +92,7 @@ const Login = () => {
           } */
           return errores;
         }}
-        onSubmit={(valores) => {}}
+        onSubmit={loginUser}
       >
         {({
           values,
@@ -133,11 +144,7 @@ const Login = () => {
                     </div>
                   )}
                 </div>
-                <ButtonComponent
-                  label="Iniciar Sesion"
-                  type="submit"
-                  handleClick={loginUser}
-                />
+                <ButtonComponent label="Iniciar Sesion" type="submit" />
               </div>
             </div>
           </form>

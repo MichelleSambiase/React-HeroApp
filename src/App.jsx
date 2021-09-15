@@ -11,7 +11,7 @@ function App() {
   const dispatch = useDispatch();
 
   const getMyHero = async () => {
-    for (let i = 1; i <= 20; i++) {
+    for (let i = 1; i <= 50; i++) {
       const getHero = await fetch(
         "https://www.superheroapi.com/api/3813382392107628/" + i
       );
@@ -41,8 +41,8 @@ function App() {
   return (
     <div>
       <Navbar />
-      <Route component={Home} path="/" exact={true} />
-      <Route component={SearchHeroes} exact path="/AllHeroes" />
+      <Route component={Home} path="/Home" exact={true} />
+      <Route component={SearchHeroes} exact path="/SearchHeroes" />
       <Route component={Login} exact path="/LogIn" />
     </div>
   );

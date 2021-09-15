@@ -6,7 +6,8 @@ const InputComponent = (props) => {
   return (
     <div>
       <TextField
-        variant="outlined"
+        /*  variant="outlined" */
+        className={props.className}
         onChange={props.onChange}
         id={props.id}
         label={props.label}
