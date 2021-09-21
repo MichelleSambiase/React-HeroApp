@@ -57,7 +57,7 @@ const Login = () => {
         history.push("/Home");
       })
       .catch(function (error) {
-        alert("Ingrese un email y contraseña validos.");
+        alert(error, "Ingrese un email y contraseña validos.");
       });
   };
 

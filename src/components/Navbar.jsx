@@ -49,7 +49,6 @@ const Navbar = (props) => {
 
   const searchHero = async (values) => {
     try {
-      console.log("entre");
       const response = await axios.get(
         `https://superheroapi.com/api/3813382392107628/search/${values.name}`
       );
@@ -72,9 +71,8 @@ const Navbar = (props) => {
         };
       });
       dispatch(searchHeroes(itemModified));
-      console.log(response);
     } catch {
-      console.log("entro en el error");
+      alert("Superheroe no encontrado");
     }
   };
 
@@ -100,11 +98,7 @@ const Navbar = (props) => {
           }}
         >
           {logueado ? (
-            <ButtonComponent
-              className={classes.logIn}
-              /* handleClick={handleClickLog} */
-              label="Cerrar Sesion"
-            />
+            <ButtonComponent className={classes.logIn} label="Cerrar Sesion" />
           ) : (
             <ButtonComponent
               className={classes.logIn}
@@ -121,7 +115,7 @@ const Navbar = (props) => {
             initialValues={{ name: "" }}
             validate={(valores) => {
               let errors = {};
-              if (!valores.name) {
+              if (!valores.name || valores.name === " ") {
                 errors.name = "Superheroe no encontrado";
               }
               return errors;
@@ -136,22 +130,33 @@ const Navbar = (props) => {
               handleChange,
               handleBlur,
             }) => (
-              <form onSubmit={handleSubmit}>
-                <InputComponent
-                  className={classes.MuiTextFieldRoot}
-                  name="name"
-                  id="name"
-                  value={values.name}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  label="search"
-                />
-                {errors.name && touched.name && (
-                  <div>
-                    <p>{errors.name}</p>
-                  </div>
-                )}
-                <ButtonComponent type="submit" label="Buscar" />
+              <form
+                onSubmit={handleSubmit}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  columnGap: "10px",
+                }}
+              >
+                <div>
+                  <InputComponent
+                    className={classes.MuiTextFieldRoot}
+                    name="name"
+                    id="name"
+                    value={values.name}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    label="search"
+                  />
+                  {errors.name && touched.name && (
+                    <div style={{ display: "flex" }}>
+                      <span style={{ fontSize: "0.8em" }}>{errors.name}</span>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <ButtonComponent type="submit" label="Buscar" />
+                </div>
               </form>
             )}
           </Formik>
