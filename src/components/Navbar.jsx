@@ -4,7 +4,7 @@ import { AppBar, Typography } from "@material-ui/core";
 
 import ButtonComponent from "./ButtonComponent";
 import InputComponent from "./InputComponent";
-import { searchHeroes, setHeros } from "../store/actions/hero";
+import { searchHeroes } from "../store/actions/hero";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
@@ -53,6 +53,7 @@ const Navbar = (props) => {
         `https://superheroapi.com/api/3813382392107628/search/${values.name}`
       );
       // Recorro el array, modifico la propiedad que quiero, retorno el objeto y le paso la nueva propiedad agregada a la variable totalAmount
+      // para tener el powerStatsTotal del heroe buscado
 
       const itemModified = response.data.results.map((item) => {
         let totalAmount = 0;
@@ -115,21 +116,14 @@ const Navbar = (props) => {
             initialValues={{ name: "" }}
             validate={(valores) => {
               let errors = {};
-              if (!valores.name || valores.name === " ") {
+              if (!valores.name || valores.name === "") {
                 errors.name = "Superheroe no encontrado";
               }
               return errors;
             }}
             onSubmit={searchHero}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleSubmit,
-              handleChange,
-              handleBlur,
-            }) => (
+            {({ values, errors, handleSubmit, handleChange, handleBlur }) => (
               <form
                 onSubmit={handleSubmit}
                 style={{
@@ -148,7 +142,7 @@ const Navbar = (props) => {
                     onBlur={handleBlur}
                     label="search"
                   />
-                  {errors.name && touched.name && (
+                  {errors.name && (
                     <div style={{ display: "flex" }}>
                       <span style={{ fontSize: "0.8em" }}>{errors.name}</span>
                     </div>
