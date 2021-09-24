@@ -19,6 +19,7 @@ function App() {
       const data = await getHero.json();
       let totalAmount = 0;
 
+      console.log(data.appearance.gender.weight);
       totalAmount =
         parseInt(data.powerstats.intelligence) +
         parseInt(data.powerstats.strength) +

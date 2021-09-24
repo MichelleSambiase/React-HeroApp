@@ -25,16 +25,14 @@ const Home = () => {
   const classes = useStyles();
   return (
     <div>
-      <h1>The IX Team</h1>
+      <h1
+        style={{ display: "flex", justifyContent: "center", color: "#4f5e5e" }}
+      >
+        The Console-Log Team
+      </h1>
       <Grid container className={classes.styleContainerHeroe}>
         {heroes.map((heroe, index) => (
-          <Grid
-            item
-            lg={3}
-            key={index}
-            item
-            className={classes.styleGridItemHeroe}
-          >
+          <Grid item lg={3} key={index} className={classes.styleGridItemHeroe}>
             <CardHeroes
               heroe={heroe}
               deleteHero={handleDeleteHero}

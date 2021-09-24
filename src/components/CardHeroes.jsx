@@ -100,11 +100,7 @@ const CardHeroes = (props) => {
                 variant="outlined"
                 handleClick={handleClickOpen}
                 label="Heroes Details"
-              >
-                {/*  <Typography className={classes.titleList}>
-                    Heroes Details
-                  </Typography> */}
-              </ButtonComponent>
+              ></ButtonComponent>
             </List>
             <List className={classes.listStyleDetails}>
               <ListItem>
@@ -146,6 +142,7 @@ const CardHeroes = (props) => {
               <ListItem>
                 <Typography className={classes.styleListItem}>
                   PowerStats Total: {props.heroe.powerStatsTotal}
+                  <br />
                 </Typography>
               </ListItem>
             </List>
