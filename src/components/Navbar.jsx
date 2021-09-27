@@ -1,19 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 
-import { AppBar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Typography,
+  Menu,
+  MenuItem,
+  Button,
+  IconButton,
+  useMediaQuery,
+} from "@material-ui/core";
 
 import ButtonComponent from "./ButtonComponent";
 import InputComponent from "./InputComponent";
 import { searchHeroes } from "../store/actions/hero";
+import { loggedIn } from "../store/actions/hero";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
 import { Formik } from "formik";
 
 const axios = require("axios");
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
     backgroundColor: "#6e7c7c",
@@ -24,6 +34,11 @@ const useStyles = makeStyles(() => ({
   logIn: {
     color: "white",
     paddingRight: "1%",
+    [theme.breakpoints.down("sm")]: {
+      width: "10%",
+      height: "6%",
+      fontSize: "0.5rem",
+    },
   },
   MuiTextFieldRoot: {
     color: "black",
@@ -31,6 +46,9 @@ const useStyles = makeStyles(() => ({
   },
   styleTitleNav: {
     cursor: "pointer",
+    [theme.breakpoints.down("sm")]: {
+      fontSize: "0.8rem",
+    },
   },
 }));
 const Navbar = (props) => {
@@ -46,6 +64,10 @@ const Navbar = (props) => {
   const handleClickLog = () => {
     props.history.push("LogIn");
   };
+  const handleClickLogOut = () => {
+    localStorage.removeItem("token");
+    dispatch(loggedIn(false));
+  };
 
   const searchHero = async (values) => {
     try {
@@ -57,6 +79,8 @@ const Navbar = (props) => {
 
       const itemModified = response.data.results.map((item) => {
         let totalAmount = 0;
+        let totalWeight = 0;
+        let totalHeight = 0;
 
         totalAmount =
           parseInt(item.powerstats.intelligence) +
@@ -66,9 +90,14 @@ const Navbar = (props) => {
           parseInt(item.powerstats.power) +
           parseInt(item.powerstats.combat);
 
+        totalWeight = parseInt(item.appearance.weight[1]);
+        totalHeight = parseInt(item.appearance.height[1]);
+
         return {
           ...item,
           powerStatsTotal: totalAmount,
+          teamTotalWeight: totalWeight,
+          teamTotalHeight: totalHeight,
         };
       });
       dispatch(searchHeroes(itemModified));
@@ -99,7 +128,11 @@ const Navbar = (props) => {
           }}
         >
           {logueado ? (
-            <ButtonComponent className={classes.logIn} label="Cerrar Sesion" />
+            <ButtonComponent
+              className={classes.logIn}
+              handleClick={handleClickLogOut}
+              label="Cerrar Sesion"
+            />
           ) : (
             <ButtonComponent
               className={classes.logIn}
@@ -112,6 +145,7 @@ const Navbar = (props) => {
             handleClick={handleClickAllHeroes}
             label="Heroes y Villanos"
           />
+
           <Formik
             initialValues={{ name: "" }}
             validate={(valores) => {

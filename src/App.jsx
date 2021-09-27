@@ -6,9 +6,13 @@ import Login from "./Pages/Login";
 import SearchHeroes from "./components/SearchHeroes";
 import { setHeros } from "./store/actions/hero";
 import { useDispatch } from "react-redux";
+import { Hidden } from "@material-ui/core";
+import NavbarResponsive from "./components/NavbarResponsive";
+import { Redirect, useHistory } from "react-router";
 
 function App() {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const getMyHero = async () => {
     for (let i = 1; i <= 50; i++) {
@@ -19,7 +23,6 @@ function App() {
       const data = await getHero.json();
       let totalAmount = 0;
 
-      console.log(data.appearance.gender.weight);
       totalAmount =
         parseInt(data.powerstats.intelligence) +
         parseInt(data.powerstats.strength) +
@@ -35,13 +38,26 @@ function App() {
       dispatch(setHeros(hero));
     }
   };
-
   useEffect(() => {
     getMyHero();
   }, []);
+
+  useEffect(() => {
+    let dataToken = localStorage.getItem("token");
+    if (dataToken) {
+      history.push("/Home");
+    } else {
+      history.push("/LogIn");
+    }
+  }, []);
   return (
     <div>
-      <Navbar />
+      <Hidden only={["xs", "sm"]}>
+        <Navbar />
+      </Hidden>
+      <Hidden only={["md", "lg", "xl"]}>
+        <NavbarResponsive />
+      </Hidden>
       <Route component={Home} path="/Home" exact={true} />
       <Route component={SearchHeroes} exact path="/SearchHeroes" />
       <Route component={Login} exact path="/LogIn" />

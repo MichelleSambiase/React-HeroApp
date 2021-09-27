@@ -1,15 +1,14 @@
 import React, { useEffect } from "react";
 import { Formik, useFormik } from "formik";
 
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import InputComponent from "../components/InputComponent";
 import ButtonComponent from "../components/ButtonComponent";
-import { Redirect, Route, useHistory } from "react-router";
+import { useHistory } from "react-router";
 
-import Home from "../components/Home";
 import { useDispatch } from "react-redux";
 import { loggedIn } from "../store/actions/hero";
 
@@ -21,15 +20,20 @@ const Login = () => {
   const useStyles = makeStyles({
     root: {
       width: "100%",
-      height: "600px",
+      height: "870px",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
+      background:
+        "url(https://cdn.hobbyconsolas.com/sites/navi.axelspringer.es/public/styles/1200/public/media/image/2017/07/heroes-dc.jpg?itok=aQYD991m)",
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
     },
     loginForm: {
-      background: "#6e7c7c94",
-      height: "80%",
-      width: "20%",
+      background: "#ffffffe3",
+      height: "50%",
+      width: "30%",
       borderRadius: "5px",
       display: "flex",
       flexDirection: "column",
@@ -38,7 +42,6 @@ const Login = () => {
     },
     loginError: {
       color: "#973636",
-      width: "50%",
     },
     messageError: {
       fontSize: "0.8rem",
@@ -51,7 +54,6 @@ const Login = () => {
         password: values.password,
       })
       .then(function (response) {
-        console.log(response);
         localStorage.setItem("token", response.data.token);
         dispatch(loggedIn(true));
         history.push("/Home");
@@ -84,12 +86,12 @@ const Login = () => {
               "El email solo puede contener letras, numeros, puntos, guiones y guion bajo.";
           }
           // Validacion Contraseña
-          /*     if (!valores.password) {
+          if (!valores.password) {
             errores.password = "Por favor ingresa una contraseña valida.";
-          } else if (!/^[^\s]{4}$/.test(valores.password)) {
+          } else if (!/^[\x20-\x7E]+$/.test(valores.password)) {
             errores.password =
               "La contraseña tiene que tener un minimo de 4 caracteres y un número.";
-          } */
+          }
           return errores;
         }}
         onSubmit={loginUser}
@@ -105,12 +107,14 @@ const Login = () => {
           <form onSubmit={handleSubmit}>
             <div className={classes.root}>
               <div className={classes.loginForm}>
+                <h3>
+                  <Typography variant="h5">Inicia Sesion</Typography>
+                </h3>
                 <div
                   style={{
                     display: "flex",
                     flexDirection: "column",
                     justifyContent: "space-evenly",
-                    height: "50%",
                     alignItems: "center",
                   }}
                 >
