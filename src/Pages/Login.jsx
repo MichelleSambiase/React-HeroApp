@@ -1,23 +1,22 @@
-import React, { useEffect } from "react";
-import { Formik, useFormik } from "formik";
-
-import { makeStyles, Typography } from "@material-ui/core";
-
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import InputComponent from "../components/InputComponent";
-import ButtonComponent from "../components/ButtonComponent";
-import { useHistory } from "react-router";
+import React from "react";
 
 import { useDispatch } from "react-redux";
-import { loggedIn } from "../store/actions/hero";
 
-const axios = require("axios");
+import { useHistory } from "react-router";
+
+import { Formik } from "formik";
+import axios from "axios";
+
+import { loggedIn } from "../store/actions/hero";
+import InputComponent from "../components/InputComponent";
+import ButtonComponent from "../components/ButtonComponent";
+
+import { makeStyles, Typography } from "@material-ui/core";
 
 const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const useStyles = makeStyles({
+  const useStyles = makeStyles((theme) => ({
     root: {
       width: "100%",
       height: "870px",
@@ -39,6 +38,9 @@ const Login = () => {
       flexDirection: "column",
       justifyContent: "space-evenly",
       alignItems: "center",
+      [theme.breakpoints.down("sm")]: {
+        width: "50%",
+      },
     },
     loginError: {
       color: "#973636",
@@ -46,7 +48,7 @@ const Login = () => {
     messageError: {
       fontSize: "0.8rem",
     },
-  });
+  }));
   const loginUser = async (values) => {
     axios
       .post("http://challenge-react.alkemy.org/", {

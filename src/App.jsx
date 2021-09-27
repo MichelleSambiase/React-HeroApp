@@ -1,14 +1,18 @@
 import React, { useEffect } from "react";
+
+import { useDispatch } from "react-redux";
+
 import { Route } from "react-router-dom";
+import { useHistory } from "react-router";
+
+import { setHeros } from "./store/actions/hero";
+import Login from "./Pages/Login";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import Login from "./Pages/Login";
 import SearchHeroes from "./components/SearchHeroes";
-import { setHeros } from "./store/actions/hero";
-import { useDispatch } from "react-redux";
-import { Hidden } from "@material-ui/core";
 import NavbarResponsive from "./components/NavbarResponsive";
-import { Redirect, useHistory } from "react-router";
+
+import { Hidden } from "@material-ui/core";
 
 function App() {
   const dispatch = useDispatch();

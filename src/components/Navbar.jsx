@@ -1,27 +1,18 @@
-import React, { useState } from "react";
-
-import {
-  AppBar,
-  Typography,
-  Menu,
-  MenuItem,
-  Button,
-  IconButton,
-  useMediaQuery,
-} from "@material-ui/core";
-
-import ButtonComponent from "./ButtonComponent";
-import InputComponent from "./InputComponent";
-import { searchHeroes } from "../store/actions/hero";
-import { loggedIn } from "../store/actions/hero";
-
-import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import { withRouter } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Formik } from "formik";
+import axios from "axios";
 
-const axios = require("axios");
+import { searchHeroes } from "../store/actions/hero";
+import { loggedIn } from "../store/actions/hero";
+
+import ButtonComponent from "./ButtonComponent";
+import InputComponent from "./InputComponent";
+
+import { makeStyles } from "@material-ui/core/styles";
+import { AppBar, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,6 +58,7 @@ const Navbar = (props) => {
   const handleClickLogOut = () => {
     localStorage.removeItem("token");
     dispatch(loggedIn(false));
+    props.history.push("/");
   };
 
   const searchHero = async (values) => {

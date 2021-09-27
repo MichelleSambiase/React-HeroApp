@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 
+import { useHistory } from "react-router";
+import { useSelector } from "react-redux";
+
 import {
   Menu,
   MenuItem,
-  Button,
   IconButton,
   AppBar,
   Typography,
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
+
 import { makeStyles } from "@material-ui/styles";
-import { useHistory } from "react-router";
-import { useSelector } from "react-redux";
+import MenuIcon from "@material-ui/icons/Menu";
 
 const useStyles = makeStyles({
   root: {
