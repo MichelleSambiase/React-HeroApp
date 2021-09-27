@@ -62,8 +62,8 @@ const Home = () => {
       >
         The Console-Log Team
         <div>
-          <Typography>total Height: {heroesWeight} kg</Typography>
-          <Typography>total Height: {heroesHeight} kg</Typography>
+          <Typography>total Weight: {heroesWeight} kg</Typography>
+          <Typography>total Height: {heroesHeight} cm</Typography>
         </div>
       </h1>
 
